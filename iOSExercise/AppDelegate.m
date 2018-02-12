@@ -13,10 +13,18 @@
 @end
 
 @implementation AppDelegate
-
+@synthesize viewCOntrollerobj;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    // Load Initial Viewcontroller
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.viewCOntrollerobj = [[ViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.viewCOntrollerobj];
+    self.window.rootViewController = navController;
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 

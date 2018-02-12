@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @protocol  NetworkHandlerDelegate<NSObject>
-@optional
 
--(void)didFinishWebService:(NSString *)webserviceAPI;
+@optional
+-(void)didFinishDetails:(NSDictionary *)resultDict;
 
 @end
+
 
 @interface NetworkHandler : NSObject <NSURLConnectionDelegate>{
     
@@ -21,5 +22,7 @@
 }
 
 @property(unsafe_unretained,nonatomic)id<NetworkHandlerDelegate>delegate;
+
+-(void)didFinishWebService:(NSString *)webserviceAPI;
 
 @end

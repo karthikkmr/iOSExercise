@@ -7,9 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NetworkHandler.h"
+#import "Utilities.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <NetworkHandlerDelegate, UITableViewDelegate, UITableViewDataSource>{
+    CGRect screenRect;
+    CGFloat screenWidth;
+    CGFloat screenHeight;
+    
+    Utilities *utilities;
+    BOOL checkConnection;
+    NSMutableArray *itemscount;
+    UITableView *dataTable;
+    UIRefreshControl *refreshControl;
+    
+    NetworkHandler *myHandler;
+}
 
+-(void)didFinishDetails:(NSDictionary*) resultDictionary;
 
 @end
 

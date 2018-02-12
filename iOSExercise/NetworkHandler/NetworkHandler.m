@@ -8,28 +8,18 @@
 
 #import "NetworkHandler.h"
 
-
-
-
 @implementation NetworkHandler
 @synthesize delegate;
 
 -(void)didFinishWebService:(NSString *)webserviceAPI{
     NSURLRequest * urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:webserviceAPI]];
-    NSURLResponse * response = nil;
-    NSError * error = nil;
-    NSData * data = [NSURLConnection sendSynchronousRequest:urlRequest
-                                          returningResponse:&response
-                                                      error:&error];
-    
-    if (error == nil)
-    {
-        // Parse data here
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        if([self.delegate respondsToSelector:@selector(didFinishLoadingContent:json:)]){
-            [self.delegate didFinishLoadingContent:json];
-        }
-    }
+    responseData = [NSMutableData data];
+    NSURLConnection * connection = [[NSURLConnection alloc]
+                                    initWithRequest:urlRequest
+                                    delegate:self startImmediately:YES];
+    [connection scheduleInRunLoop:[NSRunLoop mainRunLoop]
+                          forMode:NSDefaultRunLoopMode];
+    [connection start];
 }
 
 #pragma mark NSURLConnection Delegate Methods
@@ -39,7 +29,7 @@
     // so that we can append data to it in the didReceiveData method
     // Furthermore, this method is called each time there is a redirect so reinitializing it
     // also serves to clear it
-    responseData = [[NSMutableData alloc] init];
+    [responseData setLength:0];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
@@ -56,7 +46,13 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     // The request is complete and data has been received
     // You can parse the stuff in your instance variable now
-    
+    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSASCIIStringEncoding];
+    NSData *data = [responseString dataUsingEncoding:NSUnicodeStringEncoding];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//    NSLog(@"mydata ::: %@",json);
+    if([self.delegate respondsToSelector:@selector(didFinishDetails:)]){
+        [self.delegate didFinishDetails:json];
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {

@@ -39,10 +39,11 @@ NSString *const webserviceAPI = @"https://dl.dropboxusercontent.com/s/2iodh4vg0e
     dataTable.delegate = self;
     dataTable.dataSource = self;
     dataTable.bounces = true;
+    dataTable.allowsSelection = false;
     [self.view addSubview:dataTable];
     
 //    dataTable.rowHeight = UITableViewAutomaticDimension;
-//    dataTable.estimatedRowHeight = 200;
+//    dataTable.estimatedRowHeight = 400;
     
     [dataTable registerClass:[CustomTableViewCell class] forCellReuseIdentifier:@"MyIdentifier"];
     [dataTable setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
@@ -53,10 +54,10 @@ NSString *const webserviceAPI = @"https://dl.dropboxusercontent.com/s/2iodh4vg0e
     [refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
 }
 
--(void)setNeedsLayout{
-    [dataTable reloadData];
-    [self.view layoutIfNeeded];
-}
+//-(void)setNeedsLayout{
+//    [self.view layoutIfNeeded];
+//    [dataTable reloadData];
+//}
 
 -(void)viewWillAppear:(BOOL)animated{
     // Check Internet Connection and load data
@@ -144,6 +145,9 @@ NSString *const webserviceAPI = @"https://dl.dropboxusercontent.com/s/2iodh4vg0e
     }else{
         cell.thumbImg.image = [UIImage imageNamed:@""];
     }
+    
+//    [cell.contentView setNeedsLayout];
+//    [cell.contentView layoutIfNeeded];
 
     return cell;
 }
@@ -159,47 +163,19 @@ NSString *const webserviceAPI = @"https://dl.dropboxusercontent.com/s/2iodh4vg0e
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
-    {
-        return 200;
-    }else{
-        return 150;
-    }
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+//    {
+//        return 200;
+//    }else{
+//        return 150;
+//    }
 //    return UITableViewAutomaticDimension;
-}
+//}
 
 // For Dynamic Tableview cell height
-/*
-- (void)setUpCell:(CustomTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *dict = [itemscount objectAtIndex:indexPath.row];
-    NSString *descriptionStr = [dict valueForKey:@"description"];
- 
-    // Description Label
-    if (!([descriptionStr isEqual:[NSNull null]] || descriptionStr == nil )) {
-        cell.descriptionLbl.text = descriptionStr;
-    }else{
-        cell.descriptionLbl.text = @"";
-    }
-}
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static CustomTableViewCell *cell = nil;
-    static NSString *cellIdentifier = @"MyIdentifier";
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        cell = [dataTable dequeueReusableCellWithIdentifier:cellIdentifier];
-    });
-    [self setUpCell:cell atIndexPath:indexPath];
-    return [self calculateHeightForConfiguredSizingCell:cell];
-}
-
-- (CGFloat)calculateHeightForConfiguredSizingCell:(CustomTableViewCell *)sizingCell {
-    [sizingCell layoutIfNeeded];
-    CGSize size = [sizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    return size.height;
-}*/
 
 // NetworkHandler DidFinish Delegate Method
 -(void)didFinishDetails:(NSDictionary*) resultDictionary{

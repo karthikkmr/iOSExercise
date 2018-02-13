@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+//static NSString * const kCellIDTitle = @"CellWithTitle";
+static NSString * const kCellIDTitleMain = @"MyIdentifier";
+
 @interface CustomTableViewCell : UITableViewCell{
     NSString *reuseID;
     float totalWidth;

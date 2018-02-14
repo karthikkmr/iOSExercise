@@ -16,15 +16,27 @@
     CGFloat screenHeight;
     
     Utilities *utilities;
-    BOOL checkConnection;
-    NSMutableArray *itemscount;
+    
+    
     UITableView *dataTable;
     UIRefreshControl *refreshControl;
     
     NetworkHandler *myHandler;
 }
 
+@property(nonatomic) BOOL checkConnection;
+@property(nonatomic) NSInteger rowsCount;
+@property(nonatomic) NSMutableArray *itemscount;
+@property(nonatomic) NSString *webAPIURl;
+@property(nonatomic) NSString *titleString;
+
+
 -(void)didFinishDetails:(NSDictionary*) resultDictionary;
+
+-(void)connectionCheck;
+-(void)tableItemcount;
+-(void)apiURlMethod;
+-(void)webDataMethod;
 
 @end
 

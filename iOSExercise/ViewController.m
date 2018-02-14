@@ -16,6 +16,7 @@ NSString *const webserviceAPI = @"https://dl.dropboxusercontent.com/s/2iodh4vg0e
 @end
 
 @implementation ViewController
+@synthesize itemscount;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -65,8 +66,8 @@ NSString *const webserviceAPI = @"https://dl.dropboxusercontent.com/s/2iodh4vg0e
 }
 
 -(void)connectionCheck{
-    checkConnection = [utilities connectedToNetwork];
-    if (!checkConnection) {
+    self.checkConnection = [utilities connectedToNetwork];
+    if (!self.checkConnection) {
         UIAlertView *alert= [[UIAlertView alloc] initWithTitle:@"No internet" message:@"No internet connection found. Please try again later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
     }else{
@@ -181,8 +182,8 @@ NSString *const webserviceAPI = @"https://dl.dropboxusercontent.com/s/2iodh4vg0e
 -(void)didFinishDetails:(NSDictionary*) resultDictionary{
     
     //UINavigationBar Title Text chages Here
-    NSString *titleString = [resultDictionary valueForKey:@"title"];
-    self.navigationController.navigationBar.topItem.title = titleString;
+    self.titleString = [resultDictionary valueForKey:@"title"];
+    self.navigationController.navigationBar.topItem.title = self.titleString;
     itemscount = [resultDictionary valueForKey:@"rows"];
     // UI update should be done on main thread
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -190,6 +191,15 @@ NSString *const webserviceAPI = @"https://dl.dropboxusercontent.com/s/2iodh4vg0e
     });
 }
 
+-(void)tableItemcount{
+    self.rowsCount = itemscount.count;
+}
+-(void)apiURlMethod{
+    self.webAPIURl = webserviceAPI;
+}
+-(void)webDataMethod{
+    self.titleString = @"About Canada";
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
